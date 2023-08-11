@@ -32,4 +32,4 @@ router.patch(
 
 router.get('/', auth(ENUM_USER_ROLE.ADMIN), UserController.getAllUser);
 
-export const UserRouter = router;
+export const UserRoutes = router;
