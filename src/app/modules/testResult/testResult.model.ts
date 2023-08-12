@@ -1,56 +1,48 @@
 import { Schema, model } from 'mongoose';
-import { ITest, TestModel } from './test.interface';
+import { ITestResult, TestResultModel } from './testResult.interface';
 
-// Test Schema
-const TestSchema = new Schema<ITest, TestModel>(
+// TestResult Schema
+const TestResultSchema = new Schema<ITestResult, TestResultModel>(
   {
     questions: [
       {
         question: {
           type: String,
-          required: [true, 'question is missing!'],
+          required: [true, 'timeLimit is missing!'],
         },
         option1: {
           type: String,
-          required: [true, 'option1 is missing!'],
+          required: [true, 'timeLimit is missing!'],
         },
         option2: {
           type: String,
-          required: [true, 'option2 is missing!'],
+          required: [true, 'timeLimit is missing!'],
         },
         option3: {
           type: String,
-          required: [true, 'option3 is missing!'],
+          required: [true, 'timeLimit is missing!'],
         },
         option4: {
           type: String,
-          required: [true, 'option4 is missing!'],
+          required: [true, 'timeLimit is missing!'],
         },
         option5: {
           type: String,
-          required: [false, 'option5 is missing!'],
+          required: [false, 'timeLimit is missing!'],
         },
         answer: {
           type: String,
-          required: [true, 'answer is missing!'],
+          required: [true, 'timeLimit is missing!'],
         },
         subject: {
           type: String,
-          required: [false, 'subject is missing!'],
+          required: [false, 'timeLimit is missing!'],
         },
       },
     ],
     timeLimit: {
       type: Number,
       required: [false, 'timeLimit is missing!'],
-    },
-    subject: {
-      type: String,
-      required: [false, 'subject is missing!'],
-    },
-    serial: {
-      type: Number,
-      required: [false, 'serial is missing!'],
     },
     reviews: [
       {
@@ -81,4 +73,7 @@ const TestSchema = new Schema<ITest, TestModel>(
   }
 );
 
-export const Test = model<ITest, TestModel>('Test', TestSchema);
+export const TestResult = model<ITestResult, TestResultModel>(
+  'TestResult',
+  TestResultSchema
+);

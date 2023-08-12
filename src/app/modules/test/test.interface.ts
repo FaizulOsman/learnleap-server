@@ -21,6 +21,8 @@ export type IQuestion = {
 export type ITest = {
   questions: IQuestion[];
   timeLimit?: number;
+  subject: string;
+  serial: number;
   reviews?: IReview[];
 };
 
