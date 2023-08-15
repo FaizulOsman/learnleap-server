@@ -33,9 +33,11 @@ const createTestResult = async (
   const testResult = await TestResult.find({
     $and: [{ testId: payload.testId }, { email: payload.email }],
   });
-  console.log(testResult);
   if (testResult.length > 0) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'You have already submitted');
+    throw new ApiError(
+      httpStatus.NOT_FOUND,
+      'You have already submitted the test!'
+    );
   }
 
   const result = await TestResult.create(payload);
@@ -81,7 +83,6 @@ const getAllTestResults = async (
     andConditions?.length > 0 ? { $and: andConditions } : {};
 
   const result = await TestResult.find(whereCondition)
-    .populate('reviews')
     .sort(sortCondition)
     .skip(skip)
     .limit(limit);
