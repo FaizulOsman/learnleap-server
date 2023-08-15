@@ -10,15 +10,32 @@ import { IGenericResponse } from '../../../interfaces/common';
 import { User } from '../user/user.model';
 import ApiError from '../../../errors/apiError';
 import { paginationHelper } from '../../../helper/paginationHelper';
+import { Test } from '../test/test.model';
 
 // Create TestResult
 const createTestResult = async (
   payload: ITestResult,
   verifiedUser: any
 ): Promise<ITestResult | null> => {
+  // Check is user exist
   const user = await User.find({ _id: verifiedUser.id });
   if (user.length === 0) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+
+  // Check is test exist
+  const test = await Test.find({ _id: payload.testId });
+  if (test.length === 0) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Test not found');
+  }
+
+  // Check is result exist
+  const testResult = await TestResult.find({
+    $and: [{ testId: payload.testId }, { email: payload.email }],
+  });
+  console.log(testResult);
+  if (testResult.length > 0) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'You have already submitted');
   }
 
   const result = await TestResult.create(payload);

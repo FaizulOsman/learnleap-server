@@ -12,22 +12,20 @@ const createTestResultZodValidation = z.object({
           option4: z.string().optional(),
           option5: z.string().optional(),
           answer: z.string().optional(),
+          selectedOption: z.string().optional(),
           subject: z.string().optional(),
         })
         .optional()
     )
     .optional(),
-  timeLimit: z.number().optional(),
-  reviews: z
-    .array(
-      z.object({
-        userName: z.string(),
-        userEmail: z.string(),
-        rating: z.number(),
-        review: z.string(),
-      })
-    )
-    .optional(),
+  totalQues: z.number().optional(),
+  totalAttempted: z.number().optional(),
+  totalMarks: z.number().optional(),
+  correctAnswer: z.number().optional(),
+  wrongAnswer: z.number().optional(),
+  email: z.string().optional(),
+  name: z.string().optional(),
+  testId: z.string().optional(),
 });
 
 const updateTestResultZodValidation = z.object({
@@ -35,28 +33,25 @@ const updateTestResultZodValidation = z.object({
     questions: z
       .array(
         z.object({
-          question: z.string(),
-          option1: z.string(),
-          option2: z.string(),
-          option3: z.string(),
-          option4: z.string(),
-          option5: z.string(),
-          answer: z.string(),
+          question: z.string().optional(),
+          option1: z.string().optional(),
+          option2: z.string().optional(),
+          option3: z.string().optional(),
+          option4: z.string().optional(),
+          option5: z.string().optional(),
+          answer: z.string().optional(),
           subject: z.string().optional(),
         })
       )
       .optional(),
-    timeLimit: z.number().optional().optional(),
-    reviews: z
-      .array(
-        z.object({
-          userName: z.string(),
-          userEmail: z.string(),
-          rating: z.number(),
-          review: z.string(),
-        })
-      )
-      .optional(),
+    totalQues: z.number().optional(),
+    totalAttempted: z.number().optional(),
+    totalMarks: z.number().optional(),
+    correctAnswer: z.number().optional(),
+    wrongAnswer: z.number().optional(),
+    email: z.string().optional(),
+    name: z.string().optional(),
+    testId: z.string().optional(),
   }),
 });
 

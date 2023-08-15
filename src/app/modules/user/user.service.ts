@@ -103,9 +103,7 @@ const deleteUser = async (id: string): Promise<IUser | null> => {
 const getMyProfile = async (
   payload: JwtPayload | null
 ): Promise<IUser | null> => {
-  let result = null;
-
-  result = await User.findById({ _id: payload?.id });
+  const result = await User.findById({ _id: payload?.id });
 
   return result;
 };

@@ -9,7 +9,7 @@ const router = express.Router();
 // Routes
 router.post(
   '/create-test-result',
-  auth(ENUM_USER_ROLE.ADMIN),
+  // auth(ENUM_USER_ROLE.USER),
   validateRequest(TestResultValidation.createTestResultZodValidation),
   TestResultController.createTestResult
 );
