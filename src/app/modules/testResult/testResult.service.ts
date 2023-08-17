@@ -100,9 +100,15 @@ const getAllTestResults = async (
 };
 
 // Get Single TestResult
-const getSingleTestResult = async (id: string): Promise<ITestResult | null> => {
-  const result = await TestResult.findById(id).populate('reviews');
-  console.log(result);
+const getSingleTestResult = async (
+  id: string,
+  verifiedUser: any
+): Promise<ITestResult | null> => {
+  const result = await TestResult.findOne({
+    testId: id,
+    email: verifiedUser?.email,
+  });
+
   return result;
 };
 
@@ -147,7 +153,16 @@ const addReview = async (
       new: true,
     }
   ).populate('reviews');
-  console.log(result);
+
+  return result;
+};
+
+// My Submitted testResults (can also filter)
+const mySubmittedResults = async (
+  verifiedUser: any
+): Promise<ITestResult[]> => {
+  const result = await TestResult.find({ email: verifiedUser?.email });
+
   return result;
 };
 
@@ -158,4 +173,5 @@ export const TestResultService = {
   updateTestResult,
   deleteTestResult,
   addReview,
+  mySubmittedResults,
 };

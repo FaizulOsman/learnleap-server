@@ -64,7 +64,16 @@ const getAllTestResults: RequestHandler = catchAsync(
 const getSingleTestResult: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const id = req.params.id;
-    const result = await TestResultService.getSingleTestResult(id);
+    const token: any = req?.headers?.authorization;
+    const verifiedUser = jwtHelpers.verifyToken(
+      token,
+      config.jwt.secret as Secret
+    );
+
+    const result = await TestResultService.getSingleTestResult(
+      id,
+      verifiedUser
+    );
 
     // Send Response
     sendResponse<ITestResult>(res, {
@@ -120,6 +129,27 @@ export const addReview: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+// My Submitted testResults
+const mySubmittedResults: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const token: any = req?.headers?.authorization;
+    const verifiedUser = jwtHelpers.verifyToken(
+      token,
+      config.jwt.secret as Secret
+    );
+
+    const result = await TestResultService.mySubmittedResults(verifiedUser);
+
+    // Send Response
+    sendResponse<ITestResult[]>(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'TestResults retrieved Successfully',
+      data: result,
+    });
+  }
+);
+
 export const TestResultController = {
   createTestResult,
   getAllTestResults,
@@ -127,4 +157,5 @@ export const TestResultController = {
   updateTestResult,
   deleteTestResult,
   addReview,
+  mySubmittedResults,
 };

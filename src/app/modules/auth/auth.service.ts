@@ -21,6 +21,7 @@ const createUser = async (payload: IUser): Promise<IUserSignupResponse> => {
       {
         id: result._id,
         role: result.role,
+        email: payload.email,
       },
       config.jwt.secret as Secret,
       config.jwt.expires_in as string
@@ -30,6 +31,7 @@ const createUser = async (payload: IUser): Promise<IUserSignupResponse> => {
       {
         id: result._id,
         role: result.role,
+        email: payload.email,
       },
       config.jwt.refresh_secret as Secret,
       config.jwt.refresh_expires_in as string
@@ -57,6 +59,7 @@ const login = async (payload: IUserLogin): Promise<IUserLoginResponse> => {
     {
       id: isUserExist._id,
       role: isUserExist.role,
+      email: payload.email,
     },
     config.jwt.secret as Secret,
     config.jwt.expires_in as string
@@ -66,6 +69,7 @@ const login = async (payload: IUserLogin): Promise<IUserLoginResponse> => {
     {
       id: isUserExist._id,
       role: isUserExist.role,
+      email: payload.email,
     },
     config.jwt.refresh_secret as Secret,
     config.jwt.refresh_expires_in as string

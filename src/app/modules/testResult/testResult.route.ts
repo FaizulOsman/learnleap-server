@@ -14,6 +14,8 @@ router.post(
   TestResultController.createTestResult
 );
 
+router.get('/my-submitted-results', TestResultController.mySubmittedResults);
+
 router.get('/:id', TestResultController.getSingleTestResult);
 
 router.delete(
