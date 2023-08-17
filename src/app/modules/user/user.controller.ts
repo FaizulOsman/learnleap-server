@@ -63,7 +63,7 @@ const deleteUser: RequestHandler = catchAsync(async (req, res) => {
 const getMyProfile: RequestHandler = catchAsync(async (req, res) => {
   const user = req.user;
   const result = await UserService.getMyProfile(user);
-  console.log('My Profile', result);
+
   sendResponse<IUser>(res, {
     statusCode: httpStatus.OK,
     success: true,

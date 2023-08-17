@@ -109,6 +109,10 @@ const getSingleTestResult = async (
     email: verifiedUser?.email,
   });
 
+  if (!result) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'No Data Found!');
+  }
+
   return result;
 };
 
