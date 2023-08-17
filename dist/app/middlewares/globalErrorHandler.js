@@ -17,8 +17,8 @@ next // Express next function
 ) => {
     // Log errors in production environment otherwise log in console
     config_1.default.node_env === 'development'
-        ? console.log(`😲 globalErrorHander =>`, err)
-        : console.log(`😲 globalErrorHander =>`, err);
+        ? console.log(`😲 globalErrorHandler =>`, err)
+        : console.log(`😲 globalErrorHandler =>`, err);
     let statusCode = 500; // Default status code for internal server errors
     let message = 'Something went wrong!'; // Default error message
     let errorMessage = []; // Array to store detailed error messages
@@ -30,7 +30,7 @@ next // Express next function
         message = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.message;
         errorMessage = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.errorMessage;
     }
-    // Checi if the error is an instance of ZodError
+    // Check if the error is an instance of ZodError
     else if (err instanceof zod_1.ZodError) {
         const simplifiedError = (0, handleZodError_1.default)(err);
         statusCode = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.statusCode;

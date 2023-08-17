@@ -31,12 +31,18 @@ const auth_service_1 = require("./auth.service");
 const config_1 = __importDefault(require("../../../config"));
 const createUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const userData = __rest(req.body, []);
-    const result = yield auth_service_1.AuthService.createUser(userData);
+    const { result, refreshToken, accessToken } = yield auth_service_1.AuthService.createUser(userData);
+    // set refresh token in the browser cookie
+    const cookieOptions = {
+        secure: config_1.default.node_env === 'production',
+        httpOnly: true,
+    };
+    res.cookie('refreshToken', refreshToken, cookieOptions);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
         message: 'user created successfully',
-        data: result,
+        data: { result, accessToken },
     });
 }));
 const login = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {

@@ -31,6 +31,7 @@ const winston_1 = __importStar(require("winston"));
 const winston_daily_rotate_file_1 = __importDefault(require("winston-daily-rotate-file"));
 const path_1 = __importDefault(require("path"));
 const { combine, timestamp, label, printf } = winston_1.format;
+// Custom Log Format
 const myFormat = printf(({ level, message, label, timestamp }) => {
     const date = new Date(timestamp);
     const hour = date.getHours();
@@ -38,6 +39,7 @@ const myFormat = printf(({ level, message, label, timestamp }) => {
     const second = date.getSeconds();
     return `${`[${date.toDateString()} ${hour}:${minute}:${second}]`} [${label}] ${level}: ${message}`;
 });
+// Create a logger for general information logs
 const logger = winston_1.default.createLogger({
     level: 'info',
     format: combine(label({ label: 'COW-HUT' }), timestamp(), myFormat),
@@ -54,6 +56,7 @@ const logger = winston_1.default.createLogger({
     ],
 });
 exports.logger = logger;
+// Create a logger specifically for error logs
 const errorLogger = winston_1.default.createLogger({
     level: 'error',
     format: combine(label({ label: 'COW-HUT' }), timestamp(), myFormat),

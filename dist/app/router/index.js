@@ -6,31 +6,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const user_router_1 = require("../modules/user/user.router");
 const auth_router_1 = require("../modules/auth/auth.router");
-const cow_router_1 = require("../modules/cow/cow.router");
-const order_router_1 = require("../modules/order/order.router");
-const admin_route_1 = require("../modules/admin/admin.route");
+const test_route_1 = require("../modules/test/test.route");
+const testResult_route_1 = require("../modules/testResult/testResult.route");
 const router = express_1.default.Router();
 const moduleRoutes = [
     {
         path: '/auth',
-        router: auth_router_1.AuthRouter,
+        route: auth_router_1.AuthRouter,
     },
     {
         path: '/users',
-        router: user_router_1.UserRouter,
+        route: user_router_1.UserRoutes,
     },
     {
-        path: '/cows',
-        router: cow_router_1.CowRouter,
+        path: '/test',
+        route: test_route_1.TestRoutes,
     },
     {
-        path: '/orders',
-        router: order_router_1.OrderRouter,
-    },
-    {
-        path: '/admins',
-        router: admin_route_1.AdminRouter,
+        path: '/test-result',
+        route: testResult_route_1.TestResultRoutes,
     },
 ];
-moduleRoutes.forEach(route => router.use(route.path, route.router));
+moduleRoutes === null || moduleRoutes === void 0 ? void 0 : moduleRoutes.forEach(route => router.use(route === null || route === void 0 ? void 0 : route.path, route === null || route === void 0 ? void 0 : route.route));
 exports.default = router;

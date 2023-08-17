@@ -12,14 +12,15 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const app = (0, express_1.default)();
 // cors
 app.use((0, cors_1.default)());
-// parser
+// middleware/parser
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use((0, cookie_parser_1.default)());
-// aplication routes
+// Application routes
 app.use('/api/v1', router_1.default);
+// Root route
 app.get('/', (req, res) => {
-    res.send({ message: 'Ak bishal goru chagoler hut.' });
+    res.send({ message: '🔥 Application is successfully running 🔥' });
 });
 // global error handler
 app.use(globalErrorHandler_1.default);

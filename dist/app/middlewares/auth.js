@@ -18,6 +18,7 @@ const jwtHelpers_1 = require("../../helper/jwtHelpers");
 const config_1 = __importDefault(require("../../config"));
 const auth = (...requiredRoles) => (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        //get authorization token
         const token = req.headers.authorization;
         if (!token) {
             throw new apiError_1.default(http_status_1.default.UNAUTHORIZED, 'You are not authorized.');
@@ -25,7 +26,8 @@ const auth = (...requiredRoles) => (req, res, next) => __awaiter(void 0, void 0,
         // verify token
         let verifiedUser = null;
         verifiedUser = jwtHelpers_1.jwtHelpers.verifyToken(token, config_1.default.jwt.secret);
-        req.user = verifiedUser;
+        req.user = verifiedUser; // role , userId
+        // To create guard with role
         if (requiredRoles.length && !requiredRoles.includes(verifiedUser.role)) {
             throw new apiError_1.default(http_status_1.default.FORBIDDEN, 'Forbidden');
         }

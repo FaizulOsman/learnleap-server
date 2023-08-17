@@ -12,10 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+/* eslint-disable no-console */
 const mongoose_1 = __importDefault(require("mongoose"));
 const config_1 = __importDefault(require("./config"));
 const app_1 = __importDefault(require("./app"));
-// Handling uncaught exceptions
+// Uncaught Exception Error Handler
 process.on('uncaughtException', error => {
     console.log(error);
     process.exit(1);
@@ -24,13 +25,16 @@ let server;
 function bootstrap() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            // Connect to the database
             yield mongoose_1.default.connect(config_1.default.db_url);
-            console.log('Database connection established 😇');
+            console.log('🔥 Database connected 🔥');
+            // Start the server
             server = app_1.default.listen(config_1.default.port, () => {
-                console.log(`Ak birat goru chagoler hut choliteche port ${config_1.default.port} a. Hambaaaaaaaaa 🐄`);
+                console.log(`Server is running on port ${config_1.default.port}`);
             });
         }
         catch (error) {
+            // Log error if database connection fails
             console.log('Failed to connect to database', error);
         }
         // Gracefully shutting down the server in case of unhandled rejection
@@ -50,6 +54,7 @@ function bootstrap() {
         });
     });
 }
+// Call the bootstrap function to start the application
 bootstrap();
 // Handling SIGTERM signal
 process.on('SIGTERM', () => {

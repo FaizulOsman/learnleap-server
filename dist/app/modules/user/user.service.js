@@ -30,7 +30,6 @@ const user_constants_1 = require("./user.constants");
 const http_status_1 = __importDefault(require("http-status"));
 const apiError_1 = __importDefault(require("../../../errors/apiError"));
 const bcryptHelpers_1 = require("../../../helper/bcryptHelpers");
-const admin_model_1 = require("../admin/admin.model");
 const getAllUsers = (filters, paginationOptions) => __awaiter(void 0, void 0, void 0, function* () {
     const { searchTerm } = filters, filtersData = __rest(filters, ["searchTerm"]);
     const andConditions = [];
@@ -98,13 +97,7 @@ const deleteUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
     return result;
 });
 const getMyProfile = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    let result = null;
-    if ((payload === null || payload === void 0 ? void 0 : payload.role) === 'admin') {
-        result = yield admin_model_1.Admin.findById(payload === null || payload === void 0 ? void 0 : payload.id);
-    }
-    else {
-        result = yield user_model_1.User.findById({ _id: payload === null || payload === void 0 ? void 0 : payload.id });
-    }
+    const result = yield user_model_1.User.findById({ _id: payload === null || payload === void 0 ? void 0 : payload.id });
     return result;
 });
 const updateMyProfile = (user, payload) => __awaiter(void 0, void 0, void 0, function* () {

@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.pick = void 0;
 // This function takes an object and an array of keys as input, and returns a new object
 // that contains only the properties that are specified in the array of keys.
+// ['page','limit','sortBy','sortOrder']
 const pick = (
 // The object to be picked from.
 obj, 

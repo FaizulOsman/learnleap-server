@@ -23,7 +23,6 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true,
-        unique: true,
         select: 0,
     },
     role: {
@@ -31,32 +30,17 @@ const userSchema = new Schema({
         enum: user_constants_1.role,
     },
     name: {
-        firstName: {
-            type: String,
-            required: true,
-        },
-        lastName: {
-            type: String,
-            required: true,
-        },
+        type: String,
+        required: true,
     },
-    phoneNumber: {
+    phone: {
+        type: String,
+        required: true,
+    },
+    email: {
         type: String,
         required: true,
         unique: true,
-    },
-    address: {
-        type: String,
-        required: true,
-    },
-    budget: {
-        type: Number,
-        required: true,
-    },
-    income: {
-        type: Number,
-        required: true,
-        default: 0,
     },
 }, {
     timestamps: true,
@@ -67,9 +51,11 @@ const userSchema = new Schema({
         },
     },
 });
-userSchema.methods.isUserExist = function (phoneNumber) {
+userSchema.methods.isUserExist = function (email) {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield exports.User.findOne({ phoneNumber }, { _id: 1, role: 1, password: 1 }).select('+password');
+        return yield this.model('User')
+            .findOne({ email: email }, { _id: 1, role: 1, password: 1 })
+            .select('+password');
     });
 };
 userSchema.methods.isPasswordMatch = function (givenPassword, savedPassword) {
