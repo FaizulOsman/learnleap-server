@@ -64,7 +64,6 @@ const getAllTests = async (
     andConditions?.length > 0 ? { $and: andConditions } : {};
 
   const result = await Test.find(whereCondition)
-    .populate('reviews')
     .sort(sortCondition)
     .skip(skip)
     .limit(limit);
@@ -83,8 +82,8 @@ const getAllTests = async (
 
 // Get Single Test
 const getSingleTest = async (id: string): Promise<ITest | null> => {
-  const result = await Test.findById(id).populate('reviews');
-  console.log(result);
+  const result = await Test.findById(id);
+
   return result;
 };
 
@@ -99,37 +98,49 @@ const updateTest = async (
 
   const result = await Test.findOneAndUpdate({ _id: id }, payload, {
     new: true,
-  }).populate('reviews');
+  });
 
   return result;
 };
 
 // Delete Test
 const deleteTest = async (id: string): Promise<ITest | null> => {
-  const result = await Test.findByIdAndDelete(id).populate('reviews');
+  const result = await Test.findByIdAndDelete(id);
   if (!result) {
     throw new ApiError(httpStatus.FORBIDDEN, 'Test Not Found');
   }
   return result;
 };
 
-const addReview = async (
+const addResult = async (
   id: string,
-  payload: Partial<ITest>
+  payload: Partial<ITest>,
+  verifiedUser: any
 ): Promise<ITest | null> => {
   const isExist = await Test.findOne({ _id: id });
   if (!isExist) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Test not found');
   }
 
+  // Check is result exist
+  const isMyResultExist = await isExist.results?.find(
+    r => r.email === verifiedUser.email
+  );
+  if (isMyResultExist) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      'You have already submitted the test!'
+    );
+  }
+
   const result = await Test.findOneAndUpdate(
     { _id: id },
-    { $push: { reviews: payload } },
+    { $push: { results: payload } },
     {
       new: true,
     }
-  ).populate('reviews');
-  console.log(result);
+  );
+
   return result;
 };
 
@@ -139,5 +150,5 @@ export const TestService = {
   getSingleTest,
   updateTest,
   deleteTest,
-  addReview,
+  addResult,
 };

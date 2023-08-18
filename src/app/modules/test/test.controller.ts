@@ -99,17 +99,23 @@ const deleteTest: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
-// Add Review
-export const addReview: RequestHandler = catchAsync(async (req, res) => {
+// Add Result
+export const addResult: RequestHandler = catchAsync(async (req, res) => {
   const id = req.params.id;
   const updateData = req.body;
 
-  const result = await TestService.addReview(id, updateData);
+  const token: any = req.headers.authorization;
+  const verifiedUser = jwtHelpers.verifyToken(
+    token,
+    config.jwt.secret as Secret
+  );
+
+  const result = await TestService.addResult(id, updateData, verifiedUser);
 
   sendResponse<ITest>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Review added successfully',
+    message: 'Result added successfully',
     data: result,
   });
 });
@@ -120,5 +126,5 @@ export const TestController = {
   getSingleTest,
   updateTest,
   deleteTest,
-  addReview,
+  addResult,
 };

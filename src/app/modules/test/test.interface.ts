@@ -1,10 +1,9 @@
 import { Model } from 'mongoose';
 
-export type IReview = {
-  userName: string;
-  userEmail: string;
-  rating: number;
-  review: string;
+export type IResults = {
+  name: string;
+  email: string;
+  marks: number;
 };
 
 export type IQuestion = {
@@ -23,7 +22,7 @@ export type ITest = {
   timeLimit?: number;
   subject: string;
   serial: number;
-  reviews?: IReview[];
+  results?: IResults[];
 };
 
 // Test Model

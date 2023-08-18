@@ -47,13 +47,12 @@ const updateTestZodValidation = z.object({
       )
       .optional(),
     timeLimit: z.number().optional().optional(),
-    reviews: z
+    results: z
       .array(
         z.object({
-          userName: z.string(),
-          userEmail: z.string(),
-          rating: z.number(),
-          review: z.string(),
+          name: z.string(),
+          email: z.string(),
+          marks: z.number(),
         })
       )
       .optional(),

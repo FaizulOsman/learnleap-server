@@ -26,10 +26,9 @@ router.patch(
 );
 
 router.patch(
-  '/add-review/:id',
-  auth(ENUM_USER_ROLE.USER),
+  '/add-result/:id',
   validateRequest(TestValidation.updateTestZodValidation),
-  TestController.addReview
+  TestController.addResult
 );
 
 router.get('/', TestController.getAllTests);
