@@ -3,6 +3,7 @@ import { UserRoutes } from '../modules/user/user.router';
 import { AuthRouter } from '../modules/auth/auth.router';
 import { TestRoutes } from '../modules/test/test.route';
 import { TestResultRoutes } from '../modules/testResult/testResult.route';
+import { ExamRoutes } from '../modules/exam/exam.route';
 const router = express.Router();
 
 const moduleRoutes = [
@@ -17,6 +18,10 @@ const moduleRoutes = [
   {
     path: '/test',
     route: TestRoutes,
+  },
+  {
+    path: '/exam',
+    route: ExamRoutes,
   },
   {
     path: '/test-result',
