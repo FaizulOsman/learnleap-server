@@ -1,54 +1,54 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
 import { SortOrder } from 'mongoose';
-import { ITestResult, ITestResultFilters } from './testResult.interface';
-import { TestResult } from './testResult.model';
+import { IExamResult, IExamResultFilters } from './examResult.interface';
+import { ExamResult } from './examResult.model';
 import httpStatus from 'http-status';
 import { IPaginationOptions } from '../../../interfaces/pagination';
-import { testResultSearchableFields } from './testResult.constants';
+import { examResultSearchableFields } from './examResult.constants';
 import { IGenericResponse } from '../../../interfaces/common';
 import { User } from '../user/user.model';
 import ApiError from '../../../errors/apiError';
 import { paginationHelper } from '../../../helper/paginationHelper';
-import { Test } from '../test/test.model';
+import { Exam } from '../exam/exam.model';
 
-// Create TestResult
-const createTestResult = async (
-  payload: ITestResult,
+// Create ExamResult
+const createExamResult = async (
+  payload: IExamResult,
   verifiedUser: any
-): Promise<ITestResult | null> => {
+): Promise<IExamResult | null> => {
   // Check is user exist
   const user = await User.find({ _id: verifiedUser.id });
   if (user.length === 0) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
 
-  // Check is test exist
-  const test = await Test.find({ _id: payload.testId });
-  if (test.length === 0) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Test not found');
+  // Check is exam exist
+  const exam = await Exam.find({ _id: payload.examId });
+  if (exam.length === 0) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Exam not found');
   }
 
   // Check is result exist
-  const testResult = await TestResult.find({
-    $and: [{ testId: payload.testId }, { email: payload.email }],
+  const examResult = await ExamResult.find({
+    $and: [{ examId: payload.examId }, { email: payload.email }],
   });
-  if (testResult.length > 0) {
+  if (examResult.length > 0) {
     throw new ApiError(
       httpStatus.NOT_FOUND,
-      'You have already submitted the test!'
+      'You have already submitted the exam!'
     );
   }
 
-  const result = await TestResult.create(payload);
+  const result = await ExamResult.create(payload);
   return result;
 };
 
-// Get All TestResults (can also filter)
-const getAllTestResults = async (
-  filters: ITestResultFilters,
+// Get All ExamResults (can also filter)
+const getAllExamResults = async (
+  filters: IExamResultFilters,
   paginationOptions: IPaginationOptions
-): Promise<IGenericResponse<ITestResult[]>> => {
+): Promise<IGenericResponse<IExamResult[]>> => {
   // Try not to use any
   const { searchTerm, ...filtersData } = filters;
 
@@ -56,7 +56,7 @@ const getAllTestResults = async (
 
   if (searchTerm) {
     andConditions?.push({
-      $or: testResultSearchableFields?.map(field => ({
+      $or: examResultSearchableFields?.map(field => ({
         [field]: {
           $regex: searchTerm,
           $options: 'i',
@@ -82,12 +82,12 @@ const getAllTestResults = async (
   const whereCondition =
     andConditions?.length > 0 ? { $and: andConditions } : {};
 
-  const result = await TestResult.find(whereCondition)
+  const result = await ExamResult.find(whereCondition)
     .sort(sortCondition)
     .skip(skip)
     .limit(limit);
 
-  const total = await TestResult.countDocuments(whereCondition);
+  const total = await ExamResult.countDocuments(whereCondition);
 
   return {
     meta: {
@@ -99,13 +99,13 @@ const getAllTestResults = async (
   };
 };
 
-// Get Single TestResult
-const getSingleTestResult = async (
+// Get Single ExamResult
+const getSingleExamResult = async (
   id: string,
   verifiedUser: any
-): Promise<ITestResult | null> => {
-  const result = await TestResult.findOne({
-    testId: id,
+): Promise<IExamResult | null> => {
+  const result = await ExamResult.findOne({
+    examId: id,
     email: verifiedUser?.email,
   });
 
@@ -116,41 +116,41 @@ const getSingleTestResult = async (
   return result;
 };
 
-const updateTestResult = async (
+const updateExamResult = async (
   id: string,
-  payload: Partial<ITestResult>
-): Promise<ITestResult | null> => {
-  const isExist = await TestResult.findOne({ _id: id });
+  payload: Partial<IExamResult>
+): Promise<IExamResult | null> => {
+  const isExist = await ExamResult.findOne({ _id: id });
   if (!isExist) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'TestResult not found');
+    throw new ApiError(httpStatus.BAD_REQUEST, 'ExamResult not found');
   }
 
-  const result = await TestResult.findOneAndUpdate({ _id: id }, payload, {
+  const result = await ExamResult.findOneAndUpdate({ _id: id }, payload, {
     new: true,
   }).populate('reviews');
 
   return result;
 };
 
-// Delete TestResult
-const deleteTestResult = async (id: string): Promise<ITestResult | null> => {
-  const result = await TestResult.findByIdAndDelete(id).populate('reviews');
+// Delete ExamResult
+const deleteExamResult = async (id: string): Promise<IExamResult | null> => {
+  const result = await ExamResult.findByIdAndDelete(id).populate('reviews');
   if (!result) {
-    throw new ApiError(httpStatus.FORBIDDEN, 'TestResult Not Found');
+    throw new ApiError(httpStatus.FORBIDDEN, 'ExamResult Not Found');
   }
   return result;
 };
 
 const addReview = async (
   id: string,
-  payload: Partial<ITestResult>
-): Promise<ITestResult | null> => {
-  const isExist = await TestResult.findOne({ _id: id });
+  payload: Partial<IExamResult>
+): Promise<IExamResult | null> => {
+  const isExist = await ExamResult.findOne({ _id: id });
   if (!isExist) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'TestResult not found');
+    throw new ApiError(httpStatus.BAD_REQUEST, 'ExamResult not found');
   }
 
-  const result = await TestResult.findOneAndUpdate(
+  const result = await ExamResult.findOneAndUpdate(
     { _id: id },
     { $push: { reviews: payload } },
     {
@@ -161,21 +161,21 @@ const addReview = async (
   return result;
 };
 
-// My Submitted testResults (can also filter)
+// My Submitted examResults (can also filter)
 const mySubmittedResults = async (
   verifiedUser: any
-): Promise<ITestResult[]> => {
-  const result = await TestResult.find({ email: verifiedUser?.email });
+): Promise<IExamResult[]> => {
+  const result = await ExamResult.find({ email: verifiedUser?.email });
 
   return result;
 };
 
-export const TestResultService = {
-  createTestResult,
-  getAllTestResults,
-  getSingleTestResult,
-  updateTestResult,
-  deleteTestResult,
+export const ExamResultService = {
+  createExamResult,
+  getAllExamResults,
+  getSingleExamResult,
+  updateExamResult,
+  deleteExamResult,
   addReview,
   mySubmittedResults,
 };

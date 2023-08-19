@@ -1,8 +1,8 @@
 import { Schema, model } from 'mongoose';
-import { ITestResult, TestResultModel } from './testResult.interface';
+import { IExamResult, ExamResultModel } from './examResult.interface';
 
-// TestResult Schema
-const TestResultSchema = new Schema<ITestResult, TestResultModel>(
+// ExamResult Schema
+const ExamResultSchema = new Schema<IExamResult, ExamResultModel>(
   {
     questions: [
       {
@@ -72,9 +72,9 @@ const TestResultSchema = new Schema<ITestResult, TestResultModel>(
       type: String,
       required: [true, 'name is missing!'],
     },
-    testId: {
+    examId: {
       type: String,
-      required: [true, 'testId is missing!'],
+      required: [true, 'examId is missing!'],
     },
   },
   {
@@ -85,7 +85,7 @@ const TestResultSchema = new Schema<ITestResult, TestResultModel>(
   }
 );
 
-export const TestResult = model<ITestResult, TestResultModel>(
-  'TestResult',
-  TestResultSchema
+export const ExamResult = model<IExamResult, ExamResultModel>(
+  'ExamResult',
+  ExamResultSchema
 );

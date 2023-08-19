@@ -12,7 +12,7 @@ export type IQuestion = {
   subject?: string;
 };
 
-export type ITestResult = {
+export type IExamResult = {
   questions: IQuestion[];
   totalQues: number;
   totalAttempted: number;
@@ -21,13 +21,13 @@ export type ITestResult = {
   wrongAnswer: number;
   email: string;
   name: string;
-  testId: string;
+  examId: string;
 };
 
-// TestResult Model
-export type TestResultModel = Model<ITestResult, Record<string, unknown>>;
+// ExamResult Model
+export type ExamResultModel = Model<IExamResult, Record<string, unknown>>;
 
-export type ITestResultFilters = {
+export type IExamResultFilters = {
   searchTerm?: string;
   email?: string;
   name?: string;

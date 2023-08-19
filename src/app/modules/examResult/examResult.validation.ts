@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const createTestResultZodValidation = z.object({
+const createExamResultZodValidation = z.object({
   questions: z
     .array(
       z
@@ -25,10 +25,10 @@ const createTestResultZodValidation = z.object({
   wrongAnswer: z.number().optional(),
   email: z.string().optional(),
   name: z.string().optional(),
-  testId: z.string().optional(),
+  examId: z.string().optional(),
 });
 
-const updateTestResultZodValidation = z.object({
+const updateExamResultZodValidation = z.object({
   body: z.object({
     questions: z
       .array(
@@ -51,11 +51,11 @@ const updateTestResultZodValidation = z.object({
     wrongAnswer: z.number().optional(),
     email: z.string().optional(),
     name: z.string().optional(),
-    testId: z.string().optional(),
+    examId: z.string().optional(),
   }),
 });
 
-export const TestResultValidation = {
-  createTestResultZodValidation,
-  updateTestResultZodValidation,
+export const ExamResultValidation = {
+  createExamResultZodValidation,
+  updateExamResultZodValidation,
 };

@@ -1,11 +1,11 @@
-export const testResultFilterableFields = [
+export const examResultFilterableFields = [
   'searchTerm',
   'question',
   'answer',
   'subject',
 ];
 
-export const testResultSearchableFields = [
+export const examResultSearchableFields = [
   'searchTerm',
   'question',
   'answer',

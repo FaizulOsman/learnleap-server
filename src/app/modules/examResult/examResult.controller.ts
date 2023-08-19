@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, RequestHandler, Response } from 'express';
-import { TestResultService } from './testResult.service';
+import { ExamResultService } from './examResult.service';
 import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
 import httpStatus from 'http-status';
-import { ITestResult } from './testResult.interface';
-import { testResultFilterableFields } from './testResult.constants';
+import { IExamResult } from './examResult.interface';
+import { examResultFilterableFields } from './examResult.constants';
 import { paginationFields } from '../../../constants/pagination';
 import { Secret } from 'jsonwebtoken';
 import config from '../../../config';
 import { pick } from '../../../shared/pick';
 import { jwtHelpers } from '../../../helper/jwtHelpers';
 
-// Create TestResult
-const createTestResult: RequestHandler = catchAsync(
+// Create ExamResult
+const createExamResult: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const token: any = req.headers.authorization;
     const verifiedUser = jwtHelpers.verifyToken(
@@ -21,47 +21,47 @@ const createTestResult: RequestHandler = catchAsync(
       config.jwt.secret as Secret
     );
 
-    const { ...testResultData } = req.body;
+    const { ...examResultData } = req.body;
 
-    const result = await TestResultService.createTestResult(
-      testResultData,
+    const result = await ExamResultService.createExamResult(
+      examResultData,
       verifiedUser
     );
 
     // Send Response
-    sendResponse<ITestResult>(res, {
+    sendResponse<IExamResult>(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'TestResult Created Successfully',
+      message: 'ExamResult Created Successfully',
       data: result,
     });
   }
 );
 
-// Get all testResults
-const getAllTestResults: RequestHandler = catchAsync(
+// Get all examResults
+const getAllExamResults: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    const filters = pick(req.query, testResultFilterableFields);
+    const filters = pick(req.query, examResultFilterableFields);
     const paginationOptions = pick(req.query, paginationFields);
 
-    const result = await TestResultService.getAllTestResults(
+    const result = await ExamResultService.getAllExamResults(
       filters,
       paginationOptions
     );
 
     // Send Response
-    sendResponse<ITestResult[]>(res, {
+    sendResponse<IExamResult[]>(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'TestResults retrieved Successfully',
+      message: 'ExamResults retrieved Successfully',
       meta: result.meta,
       data: result.data,
     });
   }
 );
 
-// Get single TestResult by id
-const getSingleTestResult: RequestHandler = catchAsync(
+// Get single ExamResult by id
+const getSingleExamResult: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const id = req.params.id;
     const token: any = req?.headers?.authorization;
@@ -70,46 +70,46 @@ const getSingleTestResult: RequestHandler = catchAsync(
       config.jwt.secret as Secret
     );
 
-    const result = await TestResultService.getSingleTestResult(
+    const result = await ExamResultService.getSingleExamResult(
       id,
       verifiedUser
     );
 
     // Send Response
-    sendResponse<ITestResult>(res, {
+    sendResponse<IExamResult>(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'Get Single TestResult Successfully',
+      message: 'Get Single ExamResult Successfully',
       data: result,
     });
   }
 );
 
-// Update TestResult
-const updateTestResult: RequestHandler = catchAsync(async (req, res) => {
+// Update ExamResult
+const updateExamResult: RequestHandler = catchAsync(async (req, res) => {
   const id = req.params.id;
   const updateData = req.body;
 
-  const result = await TestResultService.updateTestResult(id, updateData);
+  const result = await ExamResultService.updateExamResult(id, updateData);
 
-  sendResponse<ITestResult>(res, {
+  sendResponse<IExamResult>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'TestResult updated successfully',
+    message: 'ExamResult updated successfully',
     data: result,
   });
 });
 
-// Delete TestResult
-const deleteTestResult: RequestHandler = catchAsync(async (req, res) => {
+// Delete ExamResult
+const deleteExamResult: RequestHandler = catchAsync(async (req, res) => {
   const id = req.params.id;
 
-  const result = await TestResultService.deleteTestResult(id);
+  const result = await ExamResultService.deleteExamResult(id);
 
-  sendResponse<ITestResult>(res, {
+  sendResponse<IExamResult>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'TestResult deleted successfully',
+    message: 'ExamResult deleted successfully',
     data: result,
   });
 });
@@ -119,9 +119,9 @@ export const addReview: RequestHandler = catchAsync(async (req, res) => {
   const id = req.params.id;
   const updateData = req.body;
 
-  const result = await TestResultService.addReview(id, updateData);
+  const result = await ExamResultService.addReview(id, updateData);
 
-  sendResponse<ITestResult>(res, {
+  sendResponse<IExamResult>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Review added successfully',
@@ -129,7 +129,7 @@ export const addReview: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
-// My Submitted testResults
+// My Submitted examResults
 const mySubmittedResults: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const token: any = req?.headers?.authorization;
@@ -138,24 +138,24 @@ const mySubmittedResults: RequestHandler = catchAsync(
       config.jwt.secret as Secret
     );
 
-    const result = await TestResultService.mySubmittedResults(verifiedUser);
+    const result = await ExamResultService.mySubmittedResults(verifiedUser);
 
     // Send Response
-    sendResponse<ITestResult[]>(res, {
+    sendResponse<IExamResult[]>(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'TestResults retrieved Successfully',
+      message: 'ExamResults retrieved Successfully',
       data: result,
     });
   }
 );
 
-export const TestResultController = {
-  createTestResult,
-  getAllTestResults,
-  getSingleTestResult,
-  updateTestResult,
-  deleteTestResult,
+export const ExamResultController = {
+  createExamResult,
+  getAllExamResults,
+  getSingleExamResult,
+  updateExamResult,
+  deleteExamResult,
   addReview,
   mySubmittedResults,
 };
