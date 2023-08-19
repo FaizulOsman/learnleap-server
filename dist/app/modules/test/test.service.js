@@ -66,7 +66,6 @@ const getAllTests = (filters, paginationOptions) => __awaiter(void 0, void 0, vo
         sortOrder && { [sortBy]: sortOrder };
     const whereCondition = (andConditions === null || andConditions === void 0 ? void 0 : andConditions.length) > 0 ? { $and: andConditions } : {};
     const result = yield test_model_1.Test.find(whereCondition)
-        .populate('reviews')
         .sort(sortCondition)
         .skip(skip)
         .limit(limit);
@@ -82,8 +81,7 @@ const getAllTests = (filters, paginationOptions) => __awaiter(void 0, void 0, vo
 });
 // Get Single Test
 const getSingleTest = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield test_model_1.Test.findById(id).populate('reviews');
-    console.log(result);
+    const result = yield test_model_1.Test.findById(id);
     return result;
 });
 const updateTest = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
@@ -93,26 +91,31 @@ const updateTest = (id, payload) => __awaiter(void 0, void 0, void 0, function* 
     }
     const result = yield test_model_1.Test.findOneAndUpdate({ _id: id }, payload, {
         new: true,
-    }).populate('reviews');
+    });
     return result;
 });
 // Delete Test
 const deleteTest = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield test_model_1.Test.findByIdAndDelete(id).populate('reviews');
+    const result = yield test_model_1.Test.findByIdAndDelete(id);
     if (!result) {
         throw new apiError_1.default(http_status_1.default.FORBIDDEN, 'Test Not Found');
     }
     return result;
 });
-const addReview = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+const addResult = (id, payload, verifiedUser) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const isExist = yield test_model_1.Test.findOne({ _id: id });
     if (!isExist) {
         throw new apiError_1.default(http_status_1.default.BAD_REQUEST, 'Test not found');
     }
-    const result = yield test_model_1.Test.findOneAndUpdate({ _id: id }, { $push: { reviews: payload } }, {
+    // Check is result exist
+    const isMyResultExist = yield ((_a = isExist.results) === null || _a === void 0 ? void 0 : _a.find(r => r.email === verifiedUser.email));
+    if (isMyResultExist) {
+        throw new apiError_1.default(http_status_1.default.BAD_REQUEST, 'You have already submitted the test!');
+    }
+    const result = yield test_model_1.Test.findOneAndUpdate({ _id: id }, { $push: { results: payload } }, {
         new: true,
-    }).populate('reviews');
-    console.log(result);
+    });
     return result;
 });
 exports.TestService = {
@@ -121,5 +124,5 @@ exports.TestService = {
     getSingleTest,
     updateTest,
     deleteTest,
-    addReview,
+    addResult,
 };

@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TestController = exports.addReview = void 0;
+exports.TestController = exports.addResult = void 0;
 const test_service_1 = require("./test.service");
 const catchAsync_1 = __importDefault(require("../../../shared/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../../shared/sendResponse"));
@@ -96,15 +96,17 @@ const deleteTest = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
         data: result,
     });
 }));
-// Add Review
-exports.addReview = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// Add Result
+exports.addResult = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const updateData = req.body;
-    const result = yield test_service_1.TestService.addReview(id, updateData);
+    const token = req.headers.authorization;
+    const verifiedUser = jwtHelpers_1.jwtHelpers.verifyToken(token, config_1.default.jwt.secret);
+    const result = yield test_service_1.TestService.addResult(id, updateData, verifiedUser);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: 'Review added successfully',
+        message: 'Result added successfully',
         data: result,
     });
 }));
@@ -114,5 +116,5 @@ exports.TestController = {
     getSingleTest,
     updateTest,
     deleteTest,
-    addReview: exports.addReview,
+    addResult: exports.addResult,
 };

@@ -16,6 +16,6 @@ router.post('/create-test', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), (0
 router.get('/:id', test_controller_1.TestController.getSingleTest);
 router.delete('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), test_controller_1.TestController.deleteTest);
 router.patch('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), (0, validateRequest_1.default)(test_validation_1.TestValidation.updateTestZodValidation), test_controller_1.TestController.updateTest);
-router.patch('/add-review/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.USER), (0, validateRequest_1.default)(test_validation_1.TestValidation.updateTestZodValidation), test_controller_1.TestController.addReview);
+router.patch('/add-result/:id', (0, validateRequest_1.default)(test_validation_1.TestValidation.updateTestZodValidation), test_controller_1.TestController.addResult);
 router.get('/', test_controller_1.TestController.getAllTests);
 exports.TestRoutes = router;

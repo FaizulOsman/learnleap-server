@@ -52,22 +52,18 @@ const TestSchema = new mongoose_1.Schema({
         type: Number,
         required: [false, 'serial is missing!'],
     },
-    reviews: [
+    results: [
         {
-            userName: {
+            name: {
                 type: String,
                 required: true,
             },
-            userEmail: {
+            email: {
                 type: String,
                 required: true,
             },
-            rating: {
+            marks: {
                 type: Number,
-                required: true,
-            },
-            review: {
-                type: String,
                 required: true,
             },
         },

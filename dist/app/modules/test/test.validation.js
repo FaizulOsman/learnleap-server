@@ -42,12 +42,11 @@ const updateTestZodValidation = zod_1.z.object({
         }))
             .optional(),
         timeLimit: zod_1.z.number().optional().optional(),
-        reviews: zod_1.z
+        results: zod_1.z
             .array(zod_1.z.object({
-            userName: zod_1.z.string(),
-            userEmail: zod_1.z.string(),
-            rating: zod_1.z.number(),
-            review: zod_1.z.string(),
+            name: zod_1.z.string(),
+            email: zod_1.z.string(),
+            marks: zod_1.z.number(),
         }))
             .optional(),
     }),
