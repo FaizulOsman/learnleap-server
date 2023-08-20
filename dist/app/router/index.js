@@ -7,7 +7,8 @@ const express_1 = __importDefault(require("express"));
 const user_router_1 = require("../modules/user/user.router");
 const auth_router_1 = require("../modules/auth/auth.router");
 const test_route_1 = require("../modules/test/test.route");
-const testResult_route_1 = require("../modules/testResult/testResult.route");
+const examResult_route_1 = require("../modules/examResult/examResult.route");
+const exam_route_1 = require("../modules/exam/exam.route");
 const router = express_1.default.Router();
 const moduleRoutes = [
     {
@@ -23,8 +24,12 @@ const moduleRoutes = [
         route: test_route_1.TestRoutes,
     },
     {
-        path: '/test-result',
-        route: testResult_route_1.TestResultRoutes,
+        path: '/exam',
+        route: exam_route_1.ExamRoutes,
+    },
+    {
+        path: '/exam-result',
+        route: examResult_route_1.ExamResultRoutes,
     },
 ];
 moduleRoutes === null || moduleRoutes === void 0 ? void 0 : moduleRoutes.forEach(route => router.use(route === null || route === void 0 ? void 0 : route.path, route === null || route === void 0 ? void 0 : route.route));
