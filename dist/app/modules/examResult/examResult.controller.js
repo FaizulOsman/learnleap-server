@@ -116,13 +116,16 @@ const mySubmittedResults = (0, catchAsync_1.default)((req, res) => __awaiter(voi
     var _b;
     const token = (_b = req === null || req === void 0 ? void 0 : req.headers) === null || _b === void 0 ? void 0 : _b.authorization;
     const verifiedUser = jwtHelpers_1.jwtHelpers.verifyToken(token, config_1.default.jwt.secret);
-    const result = yield examResult_service_1.ExamResultService.mySubmittedResults(verifiedUser);
+    const filters = (0, pick_1.pick)(req.query, examResult_constants_1.examResultFilterableFields);
+    const paginationOptions = (0, pick_1.pick)(req.query, pagination_1.paginationFields);
+    const result = yield examResult_service_1.ExamResultService.mySubmittedResults(verifiedUser, filters, paginationOptions);
     // Send Response
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
         message: 'ExamResults retrieved Successfully',
-        data: result,
+        meta: result.meta,
+        data: result.data,
     });
 }));
 exports.ExamResultController = {

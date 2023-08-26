@@ -138,14 +138,22 @@ const mySubmittedResults: RequestHandler = catchAsync(
       config.jwt.secret as Secret
     );
 
-    const result = await ExamResultService.mySubmittedResults(verifiedUser);
+    const filters = pick(req.query, examResultFilterableFields);
+    const paginationOptions = pick(req.query, paginationFields);
+
+    const result = await ExamResultService.mySubmittedResults(
+      verifiedUser,
+      filters,
+      paginationOptions
+    );
 
     // Send Response
     sendResponse<IExamResult[]>(res, {
       statusCode: httpStatus.OK,
       success: true,
       message: 'ExamResults retrieved Successfully',
-      data: result,
+      meta: result.meta,
+      data: result.data,
     });
   }
 );

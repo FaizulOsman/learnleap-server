@@ -133,9 +133,47 @@ const addReview = (id, payload) => __awaiter(void 0, void 0, void 0, function* (
     return result;
 });
 // My Submitted examResults (can also filter)
-const mySubmittedResults = (verifiedUser) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield examResult_model_1.ExamResult.find({ email: verifiedUser === null || verifiedUser === void 0 ? void 0 : verifiedUser.email });
-    return result;
+const mySubmittedResults = (verifiedUser, filters, paginationOptions) => __awaiter(void 0, void 0, void 0, function* () {
+    const { searchTerm } = filters, filtersData = __rest(filters, ["searchTerm"]);
+    const andConditions = []; // Try not to use any
+    if (searchTerm) {
+        andConditions === null || andConditions === void 0 ? void 0 : andConditions.push({
+            $or: examResult_constants_1.examResultSearchableFields === null || examResult_constants_1.examResultSearchableFields === void 0 ? void 0 : examResult_constants_1.examResultSearchableFields.map(field => ({
+                [field]: {
+                    $regex: searchTerm,
+                    $options: 'i',
+                },
+            })),
+        });
+    }
+    if (Object.keys(filtersData).length) {
+        andConditions.push({
+            $and: Object.entries(filtersData).map(([field, value]) => {
+                return { [field]: value };
+            }),
+        });
+    }
+    const { page, limit, skip, sortBy, sortOrder } = paginationHelper_1.paginationHelper.calculatePagination(paginationOptions);
+    const sortCondition = sortBy &&
+        sortOrder && { [sortBy]: sortOrder };
+    const whereCondition = (andConditions === null || andConditions === void 0 ? void 0 : andConditions.length) > 0 ? { $and: andConditions } : {};
+    const result = yield examResult_model_1.ExamResult.find({
+        $and: [whereCondition, { email: verifiedUser === null || verifiedUser === void 0 ? void 0 : verifiedUser.email }],
+    })
+        .sort(sortCondition)
+        .skip(skip)
+        .limit(limit);
+    const total = yield examResult_model_1.ExamResult.countDocuments({
+        $and: [whereCondition, { email: verifiedUser === null || verifiedUser === void 0 ? void 0 : verifiedUser.email }],
+    });
+    return {
+        meta: {
+            page,
+            limit,
+            total,
+        },
+        data: result,
+    };
 });
 exports.ExamResultService = {
     createExamResult,

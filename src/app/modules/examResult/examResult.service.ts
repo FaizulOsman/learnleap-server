@@ -163,11 +163,61 @@ const addReview = async (
 
 // My Submitted examResults (can also filter)
 const mySubmittedResults = async (
-  verifiedUser: any
-): Promise<IExamResult[]> => {
-  const result = await ExamResult.find({ email: verifiedUser?.email });
+  verifiedUser: any,
+  filters: IExamResultFilters,
+  paginationOptions: IPaginationOptions
+): Promise<IGenericResponse<IExamResult[]>> => {
+  const { searchTerm, ...filtersData } = filters;
 
-  return result;
+  const andConditions = []; // Try not to use any
+
+  if (searchTerm) {
+    andConditions?.push({
+      $or: examResultSearchableFields?.map(field => ({
+        [field]: {
+          $regex: searchTerm,
+          $options: 'i',
+        },
+      })),
+    });
+  }
+
+  if (Object.keys(filtersData).length) {
+    andConditions.push({
+      $and: Object.entries(filtersData).map(([field, value]) => {
+        return { [field]: value };
+      }),
+    });
+  }
+
+  const { page, limit, skip, sortBy, sortOrder } =
+    paginationHelper.calculatePagination(paginationOptions);
+
+  const sortCondition: '' | { [key: string]: SortOrder } = sortBy &&
+    sortOrder && { [sortBy]: sortOrder };
+
+  const whereCondition =
+    andConditions?.length > 0 ? { $and: andConditions } : {};
+
+  const result = await ExamResult.find({
+    $and: [whereCondition, { email: verifiedUser?.email }],
+  })
+    .sort(sortCondition)
+    .skip(skip)
+    .limit(limit);
+
+  const total = await ExamResult.countDocuments({
+    $and: [whereCondition, { email: verifiedUser?.email }],
+  });
+
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+    },
+    data: result,
+  };
 };
 
 export const ExamResultService = {
