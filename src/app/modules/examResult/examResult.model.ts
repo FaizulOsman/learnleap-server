@@ -44,6 +44,14 @@ const ExamResultSchema = new Schema<IExamResult, ExamResultModel>(
         },
       },
     ],
+    subject: {
+      type: String,
+      required: [true, 'subject is missing!'],
+    },
+    serial: {
+      type: Number,
+      required: [true, 'serial is missing!'],
+    },
     totalQues: {
       type: Number,
       required: [true, 'totalQues is missing!'],

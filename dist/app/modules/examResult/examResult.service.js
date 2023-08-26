@@ -116,7 +116,7 @@ const updateExamResult = (id, payload) => __awaiter(void 0, void 0, void 0, func
 });
 // Delete ExamResult
 const deleteExamResult = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield examResult_model_1.ExamResult.findByIdAndDelete(id).populate('reviews');
+    const result = yield examResult_model_1.ExamResult.findByIdAndDelete(id);
     if (!result) {
         throw new apiError_1.default(http_status_1.default.FORBIDDEN, 'ExamResult Not Found');
     }

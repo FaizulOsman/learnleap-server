@@ -14,6 +14,8 @@ export type IQuestion = {
 
 export type IExamResult = {
   questions: IQuestion[];
+  subject: string;
+  serial: number;
   totalQues: number;
   totalAttempted: number;
   totalMarks: number;

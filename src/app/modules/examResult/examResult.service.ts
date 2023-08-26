@@ -134,7 +134,7 @@ const updateExamResult = async (
 
 // Delete ExamResult
 const deleteExamResult = async (id: string): Promise<IExamResult | null> => {
-  const result = await ExamResult.findByIdAndDelete(id).populate('reviews');
+  const result = await ExamResult.findByIdAndDelete(id);
   if (!result) {
     throw new ApiError(httpStatus.FORBIDDEN, 'ExamResult Not Found');
   }
