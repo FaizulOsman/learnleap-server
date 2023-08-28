@@ -22,6 +22,7 @@ export type IExam = {
   timeLimit?: number;
   subject: string;
   serial: number;
+  isPublished?: boolean;
   results?: IResults[];
 };
 

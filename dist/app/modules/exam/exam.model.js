@@ -52,6 +52,10 @@ const ExamSchema = new mongoose_1.Schema({
         type: Number,
         required: [false, 'serial is missing!'],
     },
+    isPublished: {
+        type: Boolean,
+        required: [false, 'isPublished is missing!'],
+    },
     results: [
         {
             name: {

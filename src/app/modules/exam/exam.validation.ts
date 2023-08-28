@@ -18,6 +18,7 @@ const createExamZodValidation = z.object({
   timeLimit: z.number().optional(),
   subject: z.string().optional(),
   serial: z.number().optional(),
+  isPublished: z.boolean().optional(),
   reviews: z
     .array(
       z.object({
@@ -47,6 +48,9 @@ const updateExamZodValidation = z.object({
       )
       .optional(),
     timeLimit: z.number().optional().optional(),
+    subject: z.string().optional(),
+    serial: z.number().optional(),
+    isPublished: z.boolean().optional(),
     results: z
       .array(
         z.object({
