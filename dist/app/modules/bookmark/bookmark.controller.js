@@ -92,8 +92,10 @@ const updateBookmark = (0, catchAsync_1.default)((req, res) => __awaiter(void 0,
 }));
 // Delete Bookmark
 const deleteBookmark = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const id = req.params.id;
-    const result = yield bookmark_service_1.BookmarkService.deleteBookmark(id);
+    const question = req.body.question;
+    const token = req.headers.authorization;
+    const verifiedUser = jwtHelpers_1.jwtHelpers.verifyToken(token, config_1.default.jwt.secret);
+    const result = yield bookmark_service_1.BookmarkService.deleteBookmark(question, verifiedUser);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,

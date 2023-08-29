@@ -36,7 +36,9 @@ const createBookmark = (payload, verifiedUser) => __awaiter(void 0, void 0, void
     if (user.length === 0) {
         throw new apiError_1.default(http_status_1.default.NOT_FOUND, 'User not found');
     }
-    const isExist = yield bookmark_model_1.Bookmark.findOne({ question: payload === null || payload === void 0 ? void 0 : payload.question });
+    const isExist = yield bookmark_model_1.Bookmark.findOne({
+        $and: [{ question: payload === null || payload === void 0 ? void 0 : payload.question }, { email: verifiedUser === null || verifiedUser === void 0 ? void 0 : verifiedUser.email }],
+    });
     console.log(isExist);
     if (isExist) {
         throw new apiError_1.default(http_status_1.default.BAD_REQUEST, 'This question already added to bookmark');
@@ -106,8 +108,10 @@ const updateBookmark = (id, payload) => __awaiter(void 0, void 0, void 0, functi
     return result;
 });
 // Delete Bookmark
-const deleteBookmark = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield bookmark_model_1.Bookmark.findByIdAndDelete(id);
+const deleteBookmark = (question, verifiedUser) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield bookmark_model_1.Bookmark.findOneAndDelete({
+        $and: [{ question }, { email: verifiedUser === null || verifiedUser === void 0 ? void 0 : verifiedUser.email }],
+    });
     if (!result) {
         throw new apiError_1.default(http_status_1.default.FORBIDDEN, 'Bookmark Not Found');
     }

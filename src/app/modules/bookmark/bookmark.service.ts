@@ -21,7 +21,9 @@ const createBookmark = async (
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
 
-  const isExist = await Bookmark.findOne({ question: payload?.question });
+  const isExist = await Bookmark.findOne({
+    $and: [{ question: payload?.question }, { email: verifiedUser?.email }],
+  });
   console.log(isExist);
   if (isExist) {
     throw new ApiError(
@@ -123,33 +125,16 @@ const updateBookmark = async (
 };
 
 // Delete Bookmark
-const deleteBookmark = async (id: string): Promise<IBookmark | null> => {
-  const result = await Bookmark.findByIdAndDelete(id);
+const deleteBookmark = async (
+  question: string,
+  verifiedUser: any
+): Promise<IBookmark | null> => {
+  const result = await Bookmark.findOneAndDelete({
+    $and: [{ question }, { email: verifiedUser?.email }],
+  });
   if (!result) {
     throw new ApiError(httpStatus.FORBIDDEN, 'Bookmark Not Found');
   }
-  return result;
-};
-
-const addResult = async (
-  id: string,
-  payload: Partial<IBookmark>,
-  verifiedUser: any
-): Promise<IBookmark | null> => {
-  console.log(verifiedUser);
-  const isExist = await Bookmark.findOne({ _id: id });
-  if (!isExist) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Bookmark not found');
-  }
-
-  const result = await Bookmark.findOneAndUpdate(
-    { _id: id },
-    { $push: { results: payload } },
-    {
-      new: true,
-    }
-  );
-
   return result;
 };
 
@@ -159,5 +144,4 @@ export const BookmarkService = {
   getSingleBookmark,
   updateBookmark,
   deleteBookmark,
-  addResult,
 };

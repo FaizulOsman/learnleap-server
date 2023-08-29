@@ -12,10 +12,10 @@ const validateRequest_1 = __importDefault(require("../../middlewares/validateReq
 const bookmark_validation_1 = require("./bookmark.validation");
 const router = express_1.default.Router();
 // Routes
-router.post('/create-bookmark', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), (0, validateRequest_1.default)(bookmark_validation_1.BookmarkValidation.createBookmarkZodValidation), bookmark_controller_1.BookmarkController.createBookmark);
+router.post('/create-bookmark', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.USER), (0, validateRequest_1.default)(bookmark_validation_1.BookmarkValidation.createBookmarkZodValidation), bookmark_controller_1.BookmarkController.createBookmark);
 router.get('/:id', bookmark_controller_1.BookmarkController.getSingleBookmark);
-router.delete('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), bookmark_controller_1.BookmarkController.deleteBookmark);
-router.patch('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), (0, validateRequest_1.default)(bookmark_validation_1.BookmarkValidation.updateBookmarkZodValidation), bookmark_controller_1.BookmarkController.updateBookmark);
+router.delete('/delete-bookmark', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.USER), bookmark_controller_1.BookmarkController.deleteBookmark);
+router.patch('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.USER), (0, validateRequest_1.default)(bookmark_validation_1.BookmarkValidation.updateBookmarkZodValidation), bookmark_controller_1.BookmarkController.updateBookmark);
 router.patch('/add-result/:id', (0, validateRequest_1.default)(bookmark_validation_1.BookmarkValidation.updateBookmarkZodValidation), bookmark_controller_1.BookmarkController.addResult);
 router.get('/', bookmark_controller_1.BookmarkController.getAllBookmarks);
 exports.BookmarkRoutes = router;

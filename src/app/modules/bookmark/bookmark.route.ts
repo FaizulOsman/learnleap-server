@@ -9,7 +9,7 @@ const router = express.Router();
 // Routes
 router.post(
   '/create-bookmark',
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER),
   validateRequest(BookmarkValidation.createBookmarkZodValidation),
   BookmarkController.createBookmark
 );
@@ -17,22 +17,16 @@ router.post(
 router.get('/:id', BookmarkController.getSingleBookmark);
 
 router.delete(
-  '/:id',
-  auth(ENUM_USER_ROLE.ADMIN),
+  '/delete-bookmark',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER),
   BookmarkController.deleteBookmark
 );
 
 router.patch(
   '/:id',
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER),
   validateRequest(BookmarkValidation.updateBookmarkZodValidation),
   BookmarkController.updateBookmark
-);
-
-router.patch(
-  '/add-result/:id',
-  validateRequest(BookmarkValidation.updateBookmarkZodValidation),
-  BookmarkController.addResult
 );
 
 router.get('/', BookmarkController.getAllBookmarks);

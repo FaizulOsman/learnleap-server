@@ -107,35 +107,18 @@ const updateBookmark: RequestHandler = catchAsync(async (req, res) => {
 
 // Delete Bookmark
 const deleteBookmark: RequestHandler = catchAsync(async (req, res) => {
-  const id = req.params.id;
-
-  const result = await BookmarkService.deleteBookmark(id);
-
-  sendResponse<IBookmark>(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Bookmark deleted successfully',
-    data: result,
-  });
-});
-
-// Add Result
-export const addResult: RequestHandler = catchAsync(async (req, res) => {
-  const id = req.params.id;
-  const updateData = req.body;
-
+  const question = req.body.question;
   const token: any = req.headers.authorization;
   const verifiedUser = jwtHelpers.verifyToken(
     token,
     config.jwt.secret as Secret
   );
-
-  const result = await BookmarkService.addResult(id, updateData, verifiedUser);
+  const result = await BookmarkService.deleteBookmark(question, verifiedUser);
 
   sendResponse<IBookmark>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Result added successfully',
+    message: 'Bookmark deleted successfully',
     data: result,
   });
 });
@@ -146,5 +129,4 @@ export const BookmarkController = {
   getSingleBookmark,
   updateBookmark,
   deleteBookmark,
-  addResult,
 };
