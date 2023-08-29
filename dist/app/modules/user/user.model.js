@@ -42,6 +42,10 @@ const userSchema = new Schema({
         required: true,
         unique: true,
     },
+    isPremium: {
+        type: Boolean,
+        required: false,
+    },
 }, {
     timestamps: true,
     toJSON: {

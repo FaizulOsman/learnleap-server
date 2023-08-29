@@ -30,6 +30,10 @@ const userSchema = new Schema<IUser, UserModel>(
       required: true,
       unique: true,
     },
+    isPremium: {
+      type: Boolean,
+      required: false,
+    },
   },
   {
     timestamps: true,

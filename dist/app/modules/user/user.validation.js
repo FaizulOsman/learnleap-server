@@ -9,6 +9,7 @@ const updateUserZodSchema = zod_1.z.object({
         role: zod_1.z.enum(['user', 'admin']).optional(),
         name: zod_1.z.string().optional(),
         phone: zod_1.z.string().optional(),
+        isPremium: zod_1.z.boolean().optional(),
     }),
 });
 exports.userValidation = {
