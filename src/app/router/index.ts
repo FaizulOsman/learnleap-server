@@ -4,6 +4,7 @@ import { AuthRouter } from '../modules/auth/auth.router';
 import { TestRoutes } from '../modules/test/test.route';
 import { ExamResultRoutes } from '../modules/examResult/examResult.route';
 import { ExamRoutes } from '../modules/exam/exam.route';
+import { BookmarkRoutes } from '../modules/bookmark/bookmark.route';
 const router = express.Router();
 
 const moduleRoutes = [
@@ -26,6 +27,10 @@ const moduleRoutes = [
   {
     path: '/exam-result',
     route: ExamResultRoutes,
+  },
+  {
+    path: '/bookmarks',
+    route: BookmarkRoutes,
   },
 ];
 
