@@ -9,6 +9,7 @@ const auth_router_1 = require("../modules/auth/auth.router");
 const test_route_1 = require("../modules/test/test.route");
 const examResult_route_1 = require("../modules/examResult/examResult.route");
 const exam_route_1 = require("../modules/exam/exam.route");
+const bookmark_route_1 = require("../modules/bookmark/bookmark.route");
 const router = express_1.default.Router();
 const moduleRoutes = [
     {
@@ -30,6 +31,10 @@ const moduleRoutes = [
     {
         path: '/exam-result',
         route: examResult_route_1.ExamResultRoutes,
+    },
+    {
+        path: '/bookmarks',
+        route: bookmark_route_1.BookmarkRoutes,
     },
 ];
 moduleRoutes === null || moduleRoutes === void 0 ? void 0 : moduleRoutes.forEach(route => router.use(route === null || route === void 0 ? void 0 : route.path, route === null || route === void 0 ? void 0 : route.route));

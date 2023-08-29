@@ -21,6 +21,15 @@ const createBookmark = async (
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
 
+  const isExist = await Bookmark.findOne({ question: payload?.question });
+  console.log(isExist);
+  if (isExist) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      'This question already added to bookmark'
+    );
+  }
+
   const result = await Bookmark.create(payload);
   return result;
 };
@@ -28,7 +37,8 @@ const createBookmark = async (
 // Get All Bookmarks (can also filter)
 const getAllBookmarks = async (
   filters: IBookmarkFilters,
-  paginationOptions: IPaginationOptions
+  paginationOptions: IPaginationOptions,
+  verifiedUser: any
 ): Promise<IGenericResponse<IBookmark[]>> => {
   // Try not to use any
   const { searchTerm, ...filtersData } = filters;
@@ -63,12 +73,16 @@ const getAllBookmarks = async (
   const whereCondition =
     andConditions?.length > 0 ? { $and: andConditions } : {};
 
-  const result = await Bookmark.find(whereCondition)
+  const result = await Bookmark.find({
+    $and: [whereCondition, { email: verifiedUser?.email }],
+  })
     .sort(sortCondition)
     .skip(skip)
     .limit(limit);
 
-  const total = await Bookmark.countDocuments(whereCondition);
+  const total = await Bookmark.countDocuments({
+    $and: [whereCondition, { email: verifiedUser?.email }],
+  });
 
   return {
     meta: {
@@ -81,8 +95,13 @@ const getAllBookmarks = async (
 };
 
 // Get Single Bookmark
-const getSingleBookmark = async (id: string): Promise<IBookmark | null> => {
-  const result = await Bookmark.findById(id);
+const getSingleBookmark = async (
+  questionId: string,
+  verifiedUser: any
+): Promise<IBookmark | null> => {
+  const result = await Bookmark.findOne({
+    $and: [{ questionId }, { email: verifiedUser?.email }],
+  });
 
   return result;
 };

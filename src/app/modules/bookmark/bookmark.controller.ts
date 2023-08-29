@@ -43,10 +43,16 @@ const getAllBookmarks: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const filters = pick(req.query, bookmarkFilterableFields);
     const paginationOptions = pick(req.query, paginationFields);
+    const token: any = req.headers.authorization;
+    const verifiedUser = jwtHelpers.verifyToken(
+      token,
+      config.jwt.secret as Secret
+    );
 
     const result = await BookmarkService.getAllBookmarks(
       filters,
-      paginationOptions
+      paginationOptions,
+      verifiedUser
     );
 
     // Send Response
@@ -63,8 +69,16 @@ const getAllBookmarks: RequestHandler = catchAsync(
 // Get single Bookmark by id
 const getSingleBookmark: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    const id = req.params.id;
-    const result = await BookmarkService.getSingleBookmark(id);
+    const questionId = req?.params?.id;
+    const token: any = req.headers.authorization;
+    const verifiedUser = jwtHelpers.verifyToken(
+      token,
+      config.jwt.secret as Secret
+    );
+    const result = await BookmarkService.getSingleBookmark(
+      questionId,
+      verifiedUser
+    );
 
     // Send Response
     sendResponse<IBookmark>(res, {

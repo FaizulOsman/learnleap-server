@@ -1,6 +1,6 @@
 import { Model } from 'mongoose';
 
-export type IQuestion = {
+export type IBookmark = {
   question: string;
   option1: string;
   option2: string;
@@ -8,13 +8,9 @@ export type IQuestion = {
   option4?: string;
   option5?: string;
   answer: string;
-  subject?: string;
-};
-
-export type IBookmark = {
-  questions: IQuestion[];
   subject: string;
   email: string;
+  questionId: string;
 };
 
 // Bookmark Model
