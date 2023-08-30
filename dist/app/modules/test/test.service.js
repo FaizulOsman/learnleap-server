@@ -118,6 +118,25 @@ const addResult = (id, payload, verifiedUser) => __awaiter(void 0, void 0, void 
     });
     return result;
 });
+const getTestBySubject = (subject) => __awaiter(void 0, void 0, void 0, function* () {
+    let result = yield test_model_1.Test.find({});
+    if (subject === 'all') {
+        result = yield test_model_1.Test.find({});
+    }
+    else {
+        result = yield test_model_1.Test.find({ subject: subject });
+    }
+    let total = 0;
+    result.forEach(test => {
+        total += test.questions.length;
+    });
+    return {
+        meta: {
+            total,
+        },
+        data: result,
+    };
+});
 exports.TestService = {
     createTest,
     getAllTests,
@@ -125,4 +144,5 @@ exports.TestService = {
     updateTest,
     deleteTest,
     addResult,
+    getTestBySubject,
 };

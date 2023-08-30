@@ -13,6 +13,7 @@ const test_validation_1 = require("./test.validation");
 const router = express_1.default.Router();
 // Routes
 router.post('/create-test', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), (0, validateRequest_1.default)(test_validation_1.TestValidation.createTestZodValidation), test_controller_1.TestController.createTest);
+router.get('/get-test-by-subject/:subject', test_controller_1.TestController.getTestBySubject);
 router.get('/:id', test_controller_1.TestController.getSingleTest);
 router.delete('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), test_controller_1.TestController.deleteTest);
 router.patch('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), (0, validateRequest_1.default)(test_validation_1.TestValidation.updateTestZodValidation), test_controller_1.TestController.updateTest);

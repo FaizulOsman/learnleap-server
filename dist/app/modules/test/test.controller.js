@@ -110,6 +110,18 @@ exports.addResult = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, vo
         data: result,
     });
 }));
+// Random questions
+const getTestBySubject = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const subject = req.params.subject;
+    const result = yield test_service_1.TestService.getTestBySubject(subject);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Test retrieved successfully',
+        meta: result.meta,
+        data: result.data,
+    });
+}));
 exports.TestController = {
     createTest,
     getAllTests,
@@ -117,4 +129,5 @@ exports.TestController = {
     updateTest,
     deleteTest,
     addResult: exports.addResult,
+    getTestBySubject,
 };

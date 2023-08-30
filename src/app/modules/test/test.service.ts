@@ -145,7 +145,13 @@ const addResult = async (
 };
 
 const getTestBySubject = async (subject: string): Promise<any> => {
-  const result = await Test.find({ subject: subject });
+  let result = await Test.find({});
+
+  if (subject === 'all') {
+    result = await Test.find({});
+  } else {
+    result = await Test.find({ subject: subject });
+  }
 
   let total = 0;
   result.forEach(test => {
