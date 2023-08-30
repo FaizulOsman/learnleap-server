@@ -117,22 +117,10 @@ const deleteBookmark = (question, verifiedUser) => __awaiter(void 0, void 0, voi
     }
     return result;
 });
-const addResult = (id, payload, verifiedUser) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(verifiedUser);
-    const isExist = yield bookmark_model_1.Bookmark.findOne({ _id: id });
-    if (!isExist) {
-        throw new apiError_1.default(http_status_1.default.BAD_REQUEST, 'Bookmark not found');
-    }
-    const result = yield bookmark_model_1.Bookmark.findOneAndUpdate({ _id: id }, { $push: { results: payload } }, {
-        new: true,
-    });
-    return result;
-});
 exports.BookmarkService = {
     createBookmark,
     getAllBookmarks,
     getSingleBookmark,
     updateBookmark,
     deleteBookmark,
-    addResult,
 };

@@ -120,6 +120,21 @@ export const addResult: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+// Random questions
+const getTestBySubject: RequestHandler = catchAsync(async (req, res) => {
+  const subject = req.params.subject;
+
+  const result = await TestService.getTestBySubject(subject);
+
+  sendResponse<ITest>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Test retrieved successfully',
+    meta: result.meta,
+    data: result.data,
+  });
+});
+
 export const TestController = {
   createTest,
   getAllTests,
@@ -127,4 +142,5 @@ export const TestController = {
   updateTest,
   deleteTest,
   addResult,
+  getTestBySubject,
 };

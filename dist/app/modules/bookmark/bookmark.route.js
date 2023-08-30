@@ -16,6 +16,5 @@ router.post('/create-bookmark', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN,
 router.get('/:id', bookmark_controller_1.BookmarkController.getSingleBookmark);
 router.delete('/delete-bookmark', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.USER), bookmark_controller_1.BookmarkController.deleteBookmark);
 router.patch('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.USER), (0, validateRequest_1.default)(bookmark_validation_1.BookmarkValidation.updateBookmarkZodValidation), bookmark_controller_1.BookmarkController.updateBookmark);
-router.patch('/add-result/:id', (0, validateRequest_1.default)(bookmark_validation_1.BookmarkValidation.updateBookmarkZodValidation), bookmark_controller_1.BookmarkController.addResult);
 router.get('/', bookmark_controller_1.BookmarkController.getAllBookmarks);
 exports.BookmarkRoutes = router;

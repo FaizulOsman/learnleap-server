@@ -14,6 +14,8 @@ router.post(
   TestController.createTest
 );
 
+router.get('/get-test-by-subject/:subject', TestController.getTestBySubject);
+
 router.get('/:id', TestController.getSingleTest);
 
 router.delete('/:id', auth(ENUM_USER_ROLE.ADMIN), TestController.deleteTest);

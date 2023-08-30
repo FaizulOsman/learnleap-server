@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BookmarkController = exports.addResult = void 0;
+exports.BookmarkController = void 0;
 const bookmark_service_1 = require("./bookmark.service");
 const catchAsync_1 = __importDefault(require("../../../shared/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../../shared/sendResponse"));
@@ -103,25 +103,10 @@ const deleteBookmark = (0, catchAsync_1.default)((req, res) => __awaiter(void 0,
         data: result,
     });
 }));
-// Add Result
-exports.addResult = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const id = req.params.id;
-    const updateData = req.body;
-    const token = req.headers.authorization;
-    const verifiedUser = jwtHelpers_1.jwtHelpers.verifyToken(token, config_1.default.jwt.secret);
-    const result = yield bookmark_service_1.BookmarkService.addResult(id, updateData, verifiedUser);
-    (0, sendResponse_1.default)(res, {
-        statusCode: http_status_1.default.OK,
-        success: true,
-        message: 'Result added successfully',
-        data: result,
-    });
-}));
 exports.BookmarkController = {
     createBookmark,
     getAllBookmarks,
     getSingleBookmark,
     updateBookmark,
     deleteBookmark,
-    addResult: exports.addResult,
 };

@@ -144,6 +144,22 @@ const addResult = async (
   return result;
 };
 
+const getTestBySubject = async (subject: string): Promise<any> => {
+  const result = await Test.find({ subject: subject });
+
+  let total = 0;
+  result.forEach(test => {
+    total += test.questions.length;
+  });
+
+  return {
+    meta: {
+      total,
+    },
+    data: result,
+  };
+};
+
 export const TestService = {
   createTest,
   getAllTests,
@@ -151,4 +167,5 @@ export const TestService = {
   updateTest,
   deleteTest,
   addResult,
+  getTestBySubject,
 };
