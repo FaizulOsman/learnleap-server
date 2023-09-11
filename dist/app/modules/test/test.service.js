@@ -124,10 +124,27 @@ const getTestBySubject = (subject) => __awaiter(void 0, void 0, void 0, function
         result = yield test_model_1.Test.find({});
     }
     else {
-        result = yield test_model_1.Test.find({ subject: subject });
+        const allFiltersData = [];
+        const filterDataFromSubject = yield test_model_1.Test.find({ subject: subject });
+        allFiltersData.push(...filterDataFromSubject);
+        // Filter from model test
+        const quesFromModelTest = yield test_model_1.Test.find({ subject: 'Model Test' }, { questions: 1, _id: 0 });
+        const newArr = [];
+        for (let i = 0; i < quesFromModelTest.length; i++) {
+            const filtersData = quesFromModelTest[i].questions.filter(q => q.subject === subject);
+            newArr.push(...filtersData);
+        }
+        const filterFromModelTest = {
+            questions: newArr,
+            subject: subject,
+            timeLimit: newArr === null || newArr === void 0 ? void 0 : newArr.length,
+            serial: (filterDataFromSubject === null || filterDataFromSubject === void 0 ? void 0 : filterDataFromSubject.length) + 1,
+        };
+        allFiltersData.push(filterFromModelTest);
+        result = allFiltersData;
     }
     let total = 0;
-    result.forEach(test => {
+    result.forEach((test) => {
         total += test.questions.length;
     });
     return {
