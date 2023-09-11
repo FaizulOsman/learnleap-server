@@ -145,16 +145,40 @@ const addResult = async (
 };
 
 const getTestBySubject = async (subject: string): Promise<any> => {
-  let result = await Test.find({});
+  let result: any = await Test.find({});
 
   if (subject === 'all') {
     result = await Test.find({});
   } else {
-    result = await Test.find({ subject: subject });
+    const allFiltersData = [];
+    const filterDataFromSubject = await Test.find({ subject: subject });
+    allFiltersData.push(...filterDataFromSubject);
+
+    // Filter from model test
+    const quesFromModelTest = await Test.find(
+      { subject: 'Model Test' },
+      { questions: 1, _id: 0 }
+    );
+    const newArr: any = [];
+    for (let i = 0; i < quesFromModelTest.length; i++) {
+      const filtersData = quesFromModelTest[i].questions.filter(
+        q => q.subject === subject
+      );
+      newArr.push(...filtersData);
+    }
+    const filterFromModelTest = {
+      questions: newArr,
+      subject: subject,
+      timeLimit: newArr?.length,
+      serial: filterDataFromSubject?.length + 1,
+    };
+    allFiltersData.push(filterFromModelTest);
+
+    result = allFiltersData;
   }
 
   let total = 0;
-  result.forEach(test => {
+  result.forEach((test: { questions: string | any[] }) => {
     total += test.questions.length;
   });
 
