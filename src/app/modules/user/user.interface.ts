@@ -9,6 +9,8 @@ export type IUser = {
   email: string;
   phone: string;
   isPremium?: boolean;
+  address?: string;
+  imageUrl?: string;
 };
 
 export type IUserMethods = {

@@ -16,6 +16,7 @@ const userSchema = new Schema<IUser, UserModel>(
     role: {
       type: String,
       enum: role,
+      required: true,
     },
     name: {
       type: String,
@@ -24,6 +25,7 @@ const userSchema = new Schema<IUser, UserModel>(
     phone: {
       type: String,
       required: true,
+      unique: true,
     },
     email: {
       type: String,
@@ -32,6 +34,14 @@ const userSchema = new Schema<IUser, UserModel>(
     },
     isPremium: {
       type: Boolean,
+      required: false,
+    },
+    imageUrl: {
+      type: String,
+      required: false,
+    },
+    address: {
+      type: String,
       required: false,
     },
   },

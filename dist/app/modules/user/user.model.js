@@ -28,6 +28,7 @@ const userSchema = new Schema({
     role: {
         type: String,
         enum: user_constants_1.role,
+        required: true,
     },
     name: {
         type: String,
@@ -36,6 +37,7 @@ const userSchema = new Schema({
     phone: {
         type: String,
         required: true,
+        unique: true,
     },
     email: {
         type: String,
@@ -44,6 +46,14 @@ const userSchema = new Schema({
     },
     isPremium: {
         type: Boolean,
+        required: false,
+    },
+    imageUrl: {
+        type: String,
+        required: false,
+    },
+    address: {
+        type: String,
         required: false,
     },
 }, {

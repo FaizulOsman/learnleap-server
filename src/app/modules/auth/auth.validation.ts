@@ -2,21 +2,14 @@ import { z } from 'zod';
 
 const createUserZodSchema = z.object({
   body: z.object({
-    email: z.string({
-      required_error: 'email is required',
-    }),
-    password: z.string({
-      required_error: 'password is required',
-    }),
-    role: z.enum(['user', 'admin'], {
-      required_error: 'role is required',
-    }),
-    name: z.string({
-      required_error: 'name is required',
-    }),
-    phone: z.string({
-      required_error: 'phone number is required',
-    }),
+    email: z.string(),
+    password: z.string(),
+    role: z.enum(['user', 'admin']),
+    name: z.string(),
+    phone: z.string(),
+    isPremium: z.boolean().optional(),
+    imageUrl: z.string().optional(),
+    address: z.string().optional(),
   }),
 });
 

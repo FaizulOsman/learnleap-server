@@ -8,6 +8,8 @@ const updateUserZodSchema = z.object({
     name: z.string().optional(),
     phone: z.string().optional(),
     isPremium: z.boolean().optional(),
+    imageUrl: z.string().optional(),
+    address: z.string().optional(),
   }),
 });
 
