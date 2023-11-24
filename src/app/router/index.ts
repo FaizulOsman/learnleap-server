@@ -7,6 +7,7 @@ import { ExamRoutes } from '../modules/exam/exam.route';
 import { BookmarkRoutes } from '../modules/bookmark/bookmark.route';
 import { DiscussRoutes } from '../modules/discuss/discuss.route';
 import { FeedbackRoutes } from '../modules/feedback/feedback.route';
+import { FaqRoutes } from '../modules/faq/faq.route';
 const router = express.Router();
 
 const moduleRoutes = [
@@ -41,6 +42,10 @@ const moduleRoutes = [
   {
     path: '/feedbacks',
     route: FeedbackRoutes,
+  },
+  {
+    path: '/faq',
+    route: FaqRoutes,
   },
 ];
 

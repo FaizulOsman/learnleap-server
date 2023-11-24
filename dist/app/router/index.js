@@ -12,6 +12,7 @@ const exam_route_1 = require("../modules/exam/exam.route");
 const bookmark_route_1 = require("../modules/bookmark/bookmark.route");
 const discuss_route_1 = require("../modules/discuss/discuss.route");
 const feedback_route_1 = require("../modules/feedback/feedback.route");
+const faq_route_1 = require("../modules/faq/faq.route");
 const router = express_1.default.Router();
 const moduleRoutes = [
     {
@@ -45,6 +46,10 @@ const moduleRoutes = [
     {
         path: '/feedbacks',
         route: feedback_route_1.FeedbackRoutes,
+    },
+    {
+        path: '/faq',
+        route: faq_route_1.FaqRoutes,
     },
 ];
 moduleRoutes === null || moduleRoutes === void 0 ? void 0 : moduleRoutes.forEach(route => router.use(route === null || route === void 0 ? void 0 : route.path, route === null || route === void 0 ? void 0 : route.route));
